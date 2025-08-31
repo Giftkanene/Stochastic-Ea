@@ -7,44 +7,44 @@
 //+------------------------------------------------------------------+
 
 #include <Trade\Trade.mqh>
+#include <Indicators\Oscilators.mqh> 
 
 
 //+------------------------------------------------------------------+
 //| Input variables                                                  |
 //+------------------------------------------------------------------+
-input ulong  InpMagic         = 105;       // Magic number
-input int    InpKPeriod       = 5;       // %K period
-input int    InpDPeriod       = 3;       // %D period
-input int    InpSlowing       = 3;       // Slowing
-input double InpLots          = 0.01;    // Lot size
-input int    InpStopLossPips  = 200;     // Stop loss (pips)
-input int    InpTakeProfitPips= 400;     // Take profit (pips)
-input string InpComment       = "StochEA";
+input ulong            InpMagic               = 105;       // Magic number
+input int              InpKPeriod             = 5;       // %K period
+input int              InpDPeriod             = 3;       // %D period
+input int              InpSlowing             = 3;       // Slowing
+input double           InpLots                = 0.01;    // Lot size
+input int              InpStopLossPips        = 200;     // Stop loss (pips)
+input int              InpTakeProfitPips      = 400;     // Take profit (pips)
+input ENUM_MA_METHOD   InpMaMethod            = MODE_SMA;      // MODE_SMA, MODE_EMA, MODE_SMMA, MODE_LWMA
+input ENUM_STO_PRICE   InpPriceField          = STO_LOWHIGH;   // STO_LOWHIGH, STO_CLOSECLOSE
+input string           InpComment             = "StochEA";
 
 
 //+------------------------------------------------------------------+
-//| Global variables                                                  |
+//| Global variables                                                 |
 //+------------------------------------------------------------------+
 
-CTrade trade;
-int    stochHandle = INVALID_HANDLE;
-double kBuf[3];
-double dBuf[3];
+CTrade trade;               // Object of CTrade Class 
+CiStochastic stochastic;      // Object of CIndicator Class 
+
+
 
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
   {
-   // create Stochastic handle
-   stochHandle = iStochastic(Symbol(), (ENUM_TIMEFRAMES)Period(), InpKPeriod, InpDPeriod, InpSlowing, (ENUM_MA_METHOD)MODE_SMA, (ENUM_STO_PRICE)STO_LOWHIGH);
-   if(stochHandle == INVALID_HANDLE)
-     {
-      Print("Failed to create Stochastic handle");
+    if(!stochastic.Create(_Symbol,PERIOD_CURRENT,InpKPeriod,InpDPeriod,InpSlowing,InpMaMethod,InpPriceField))
+    {
+      Print("Failed to create Stochastic indicator");
       return(INIT_FAILED);
-     }
-
-   return(INIT_SUCCEEDED);
+    }
+    return(INIT_SUCCEEDED);
   }
 
 //+------------------------------------------------------------------+
@@ -52,11 +52,7 @@ int OnInit()
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
   {
-   if(stochHandle != INVALID_HANDLE)
-     {
-      IndicatorRelease(stochHandle);
-      stochHandle = INVALID_HANDLE;
-     }
+   
   }
 
 //+------------------------------------------------------------------+
@@ -64,5 +60,7 @@ void OnDeinit(const int reason)
 //+------------------------------------------------------------------+
 void OnTick()
   {
+    //lets get some price values 
    
   }
+
