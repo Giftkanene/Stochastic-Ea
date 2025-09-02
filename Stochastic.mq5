@@ -29,10 +29,8 @@ input string           InpComment             = "StochEA";
 //| Global variables                                                 |
 //+------------------------------------------------------------------+
 
-CTrade trade;               // Object of CTrade Class 
+CTrade trade;                 // Object of CTrade Class 
 CiStochastic stochastic;      // Object of CIndicator Class 
-
-
 
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
@@ -52,7 +50,7 @@ int OnInit()
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
   {
-   
+  
   }
 
 //+------------------------------------------------------------------+
@@ -60,7 +58,13 @@ void OnDeinit(const int reason)
 //+------------------------------------------------------------------+
 void OnTick()
   {
-    //lets get some price values 
+    // lets print the indicator values on the chart 
+    double mainValue =   stochastic.Main(0); // gets the main value of the indicator from the previous bar 
+    double signalValue = stochastic.Signal(0); // get the signal value of the indicator from the previous bar
    
+    
+    // Comment("MAIN   = ", DoubleToString(mainValue,4), "\nSIGNAL = ", DoubleToString(signalValue,4));
+     Print("the value of this indicator is  ", mainValue);
+  
   }
 
